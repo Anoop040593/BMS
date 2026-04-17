@@ -1,9 +1,24 @@
 import { Link } from "react-router-dom";
 import { Button, Form, Input } from "antd";
-
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+//API
+import { registerUser } from "../api/users";
 const Register = () => {
-  const handleUserRegister = (values) => {
-    console.log("register form values", values);
+  const navigate = useNavigate();
+  const handleUserRegister = async (values) => {
+    const response = await registerUser(values);
+    try {
+      //with no await, we would receive the response without the promise being resolved
+      if (response.success) {
+        message.success("Registration successful, Please login!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      }
+    } catch (err) {
+      message.error(response.message);
+    }
   };
   return (
     <header className="App-header">

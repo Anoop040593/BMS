@@ -1,5 +1,6 @@
 import { response } from "express";
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
   try {
@@ -15,11 +16,13 @@ export const register = async (req, res) => {
       });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     //Step 3: Create new user
     await User.create({
       name,
       email,
-      password,
+      password: hashedPassword,
       role,
     });
 
@@ -31,6 +34,38 @@ export const register = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Registration failed",
+    });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User doesn't exist!",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password); //compare the encrypted password with user password
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Credentials",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Login Successful",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Login failed",
     });
   }
 };

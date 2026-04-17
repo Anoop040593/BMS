@@ -1,8 +1,30 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/users";
+import { useState } from "react";
 const Login = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleUserLogin = async (values) => {
+    try {
+      setLoading(true);
+      const response = await loginUser(values);
+      if (response.success) {
+        message.success("Login successful");
+        navigate("/"); //this is temporart
+      } else {
+        message.error(response.message || "Invalid Credentials");
+      }
+    } catch (err) {
+      message.error(err.response?.data?.message || "Invalid Credentials");
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleFinish = (values) => {
     console.log("User Logged In!", values);
   };
@@ -15,7 +37,7 @@ const Login = () => {
           </section>
 
           <section className="right-section">
-            <Form layout="vertical" onFinish={handleFinish}>
+            <Form layout="vertical" onFinish={handleUserLogin}>
               <Form.Item
                 label="Email"
                 htmlFor="email"
