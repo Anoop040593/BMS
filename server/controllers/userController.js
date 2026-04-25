@@ -1,7 +1,7 @@
 import { response } from "express";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
-
+import { signToken } from "../utils/jwt.js";
 export const register = async (req, res) => {
   try {
     //Step 1: Read user input from request
@@ -57,10 +57,14 @@ export const login = async (req, res) => {
         message: "Invalid Credentials",
       });
     }
-
+    const token = signToken({ userId: user._id.toString() }); //_id created by mongodb
+    // console.log("===>", { token, user });
     res.status(200).json({
       success: true,
       message: "Login Successful",
+      data: {
+        token,
+      },
     });
   } catch (err) {
     res.status(500).json({
@@ -68,4 +72,25 @@ export const login = async (req, res) => {
       message: "Login failed",
     });
   }
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User fetched successfully!",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {}
 };

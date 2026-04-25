@@ -15,7 +15,12 @@ const Login = () => {
       const response = await loginUser(values);
       if (response.success) {
         message.success("Login successful");
-        navigate("/"); //this is temporart
+        const token = response.data?.token;
+        if (token) {
+          localStorage.setItem("token", token);
+        }
+
+        navigate("/");
       } else {
         message.error(response.message || "Invalid Credentials");
       }
