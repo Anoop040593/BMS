@@ -12,6 +12,7 @@ import ProtectRoute from "./components/ProtectedRoute";
 import Partner from "./pages/partner";
 import TheatreShows from "./pages/partner/TheatreShows";
 import MovieDetails from "./pages/MovieDetails";
+import BookShow from "./pages/BookShow";
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +33,14 @@ function App() {
           element={
             <ProtectRoute>
               <MovieDetails />{" "}
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/book-show/:showId"
+          element={
+            <ProtectRoute>
+              <BookShow />{" "}
             </ProtectRoute>
           }
         />

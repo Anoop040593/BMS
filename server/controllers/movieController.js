@@ -64,3 +64,19 @@ export const deleteMovie = async (req, res) => {
     });
   }
 };
+
+export const getMovieById = async (req, res) => {
+  try {
+    const movie = await Movie.findById(req.params.id);
+    res.send({
+      data: movie,
+      success: true,
+      message: "Movie fetched successfully",
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.messgage,
+    });
+  }
+};

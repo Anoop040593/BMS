@@ -27,6 +27,15 @@ export const updateMovie = async (payload) => {
   }
 };
 
+export const getMovieById = async (movieId) => {
+  try {
+    const response = await apiClient.get(`/movie/${movieId}`);
+    return response.data;
+  } catch (err) {
+    return err.response?.data || { success: false, message: err.message };
+  }
+};
+
 export const deleteMovie = async (payload) => {
   try {
     const response = await apiClient.post("/movie/delete-movie", payload);
