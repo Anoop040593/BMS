@@ -20,7 +20,12 @@ const Home = () => {
   if (error) return <div>{error}</div>;
   if (!user) return <div>...Loading</div>;
   return (
-    <div>
+    <div
+      style={{
+        width: "100%",
+        maxWidth: "1100px",
+      }}
+    >
       <h2>Home Component</h2>
       <h3>Name: {user.name}</h3>
       <h3>Email: {user.email}</h3>

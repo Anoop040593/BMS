@@ -5,13 +5,13 @@ import Register from "./pages/Register";
 import Admin from "./pages/admin";
 import Profile from "./pages/Profile";
 import PNF from "./pages/PageNotFound";
-
 //styles
 import "./App.css";
 import "antd/dist/reset.css";
-
 import ProtectRoute from "./components/ProtectedRoute";
 import Partner from "./pages/partner";
+import TheatreShows from "./pages/partner/TheatreShows";
+import MovieDetails from "./pages/MovieDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +24,14 @@ function App() {
           element={
             <ProtectRoute>
               <Home />{" "}
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/movie/:movieId"
+          element={
+            <ProtectRoute>
+              <MovieDetails />{" "}
             </ProtectRoute>
           }
         />
@@ -45,6 +53,15 @@ function App() {
             </ProtectRoute>
           }
         />
+        <Route
+          path="/partner/theatres/:theatreId/shows"
+          element={
+            <ProtectRoute>
+              <TheatreShows />{" "}
+            </ProtectRoute>
+          }
+        />
+
         <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<PNF />} />
       </Routes>
