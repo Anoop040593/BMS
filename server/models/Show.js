@@ -29,7 +29,7 @@ const showSchema = new mongoose.Schema(
       required: true,
     },
 
-    bookedSeat: {
+    bookedSeats: {
       type: [String],
       default: [],
     },

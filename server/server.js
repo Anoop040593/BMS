@@ -6,6 +6,8 @@ import UserRoutes from "./routes/userRoutes.js";
 import movieRouter from "./routes/movieRoutes.js";
 import theatreRouter from "./routes/theatreRoutes.js";
 import showRouter from "./routes/showRoutes.js";
+import bookingRouter from "./routes/bookingRoutes.js";
+
 dotenv.config();
 connectDB();
 
@@ -18,6 +20,7 @@ app.use("/api/user", UserRoutes);
 app.use("/api/movie", movieRouter);
 app.use("/api/theatre", theatreRouter);
 app.use("/api/show", showRouter);
+app.use("/api/booking", bookingRouter);
 
 app.get("/health", (req, res) => {
   res.send("Server is running");

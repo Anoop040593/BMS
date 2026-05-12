@@ -13,12 +13,14 @@ import Partner from "./pages/partner";
 import TheatreShows from "./pages/partner/TheatreShows";
 import MovieDetails from "./pages/MovieDetails";
 import BookShow from "./pages/BookShow";
+import { ForgetPasswordPage } from "./pages/ForgetPass";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgetPasswordPage />} />
         {/* /*This is what User will see */}
         <Route
           path="/"
@@ -71,7 +73,14 @@ function App() {
           }
         />
 
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectRoute>
+              <Profile />
+            </ProtectRoute>
+          }
+        />
         <Route path="*" element={<PNF />} />
       </Routes>
     </BrowserRouter>

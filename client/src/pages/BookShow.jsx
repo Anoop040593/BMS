@@ -4,7 +4,6 @@ import { getShowsById } from "../api/shows.js";
 import { makePayment, bookShow } from "../api/bookings.js";
 import { Card, Row, Col, Button, message } from "antd";
 import moment from "moment";
-import StripeCheckout from "react-stripe-checkout";
 
 const BookShow = () => {
   const { showId } = useParams();
@@ -122,10 +121,6 @@ const BookShow = () => {
     }
   };
 
-  const onToken = (token) => {
-    console.log("Token genreated: ", token);
-  };
-
   useEffect(() => {
     const fetchShowDetails = async () => {
       try {
@@ -169,7 +164,7 @@ const BookShow = () => {
                   <h3>
                     <span>Total Seats:</span> 120
                     <span> &nbsp;|&nbsp; Available Seats:</span>
-                    {120 - show.bookedSeats}
+                    {120 - show.bookedSeats.length}
                   </h3>
                 </div>
               }
@@ -177,18 +172,17 @@ const BookShow = () => {
             >
               {getSeats()} {/* Rendering dynamic seat layout */}
               {selectedSeats.length > 0 && (
-                <StripeCheckout
-                  //token={onToken}
-                  billingAddress
-                  amount={selectedSeats.length * show.ticketPrice}
-                  stripeKey="pk_test_51TSiVi2c4Bf3fFvgWdvFHsPWuR1709cAC4EHXUojl0xqwZUcMkF5Wdwrc7QnmHIPw6nq5YbIn7vn740PxVc9DyoO00EDR77Cyt"
-                >
-                  <div className="max-width-600 mx-auto">
-                    <Button type="primary" shape="round" size="large" block>
-                      Pay Now
-                    </Button>
-                  </div>
-                </StripeCheckout>
+                <div className="max-width-600 mx-auto mt-3">
+                  <Button
+                    type="primary"
+                    shape="round"
+                    size="large"
+                    block
+                    onClick={handlePayment}
+                  >
+                    Pay Now
+                  </Button>
+                </div>
               )}
             </Card>
           </Col>
